@@ -1,0 +1,32 @@
+.approvepane
+{
+    text-align: left;
+    padding: 10px;
+    position: relative;
+    /* position: absolute; */
+    overflow-y: auto;
+    overflow-x: none;
+    border-bottom-color: lightgrey;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+@media only screen and (min-width: 600px) {
+.approvepane
+{
+    text-align: left;
+    padding: 20px;
+    position: relative;
+    /* position: absolute; */
+    width: calc(100vw - 100px);  
+    height:calc(100vh - 200px); 
+    overflow-y: auto;
+    overflow-x: none;
+    border-bottom-color: lightgrey;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+}
+
+.noitemsdiv{
+    margin-top: 20px;
+}

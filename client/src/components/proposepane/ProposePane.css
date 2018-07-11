@@ -1,0 +1,97 @@
+.proposepane
+  {
+      padding: 10px;
+  }
+@media only screen and (min-width: 600px) {
+  .proposepane
+  {
+      padding: 20px;
+      position: absolute;
+      width: calc(100vw - 100px);  
+
+  }
+}
+
+text 
+{
+  font-size: 12px;
+  padding:5px;
+  display:block;
+}
+
+label{
+    text-align: left;
+    font-style: normal
+}
+
+button {
+    align: left;
+    max-width: 100px;
+}
+
+textarea {
+  margin-bottom: 1rem;
+  display: block;
+  width : 100%;
+  height : 200px;
+}
+
+.flexDiv
+{
+  display :flex;
+  flex-direction: column;
+  padding-bottom: 10px;
+}
+
+.recaptcha
+{
+  margin-bottom: 15px; 
+}
+
+.responseProp
+{
+  
+  
+  background-color: #439aff;
+  color: white;
+  font-size: 16px !important;
+  opacity: 0;
+
+
+}
+
+
+.responseErrProp
+{
+  
+  
+  background-color: red;
+  color: white;
+  font-size: 16px !important;
+  opacity: 0;
+
+
+}
+.responseErrProp.show{
+  opacity: 0;
+  animation: fadein 10s ease-in 0s 1;  
+}
+
+.responseProp.show{
+  opacity: 0;
+  animation: fadeinprop 10s ease-in 0s 1;  
+}
+
+@keyframes fadeinprop {
+  0%, 100% {
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+
+}

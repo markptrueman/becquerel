@@ -1,0 +1,203 @@
+.blogpost{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-bottom: 20px;
+}
+.blogpost
+{
+    color: #439aff;
+    font-size: 12px;
+}
+
+.panel-title {
+    font-size: 14px;
+    
+}
+
+.panel-body {
+    padding: 0;
+}
+
+.panel-title a {
+    text-decoration: none;
+}
+
+.title-wrapper {
+    display: flex;
+    flex-direction: column;
+   
+}
+.title-row {
+    display: flex;
+    flex-direction: row;
+   
+}
+
+.proposed-by {
+    color: darkgrey;
+    font-style: italic;
+}
+
+
+.title-author {
+    color: darkgrey;
+    font-style: italic;
+}
+
+.body-wrapper
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.body-row {
+  padding: 15px;
+}
+
+.postmarkdown
+{
+   font-style: italic;
+    max-height: 75px;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: lightgray;
+    padding-bottom: 15px;
+    background-color: aliceblue;
+
+
+}
+
+.commentsBold
+{
+    font-style: bold;
+
+}
+
+.react-confirm-alert {
+    font-family:'Source Sans Pro', sans-serif !important;
+}
+
+.react-confirm-alert > h3 {
+   
+    font-size: 14px !important;
+  }
+
+  .react-confirm-alert > h1 {
+   
+    font-size: 18px !important;
+  }
+
+  
+.optionbuttons
+{
+    display: flex;
+    flex-direction: row;
+    background-color: ghostwhite;
+}
+
+.optionbutton
+{
+    padding-right: 10px;
+    padding-top:60px;
+}
+
+.comments{
+    font-style: italic;
+}
+
+.commentsWrapper{
+    background-color: lemonchiffon
+}
+
+
+
+.submitterComments
+{
+    width: 300px;
+    max-height :100px;
+    padding-right: 20px;
+}
+.submitterComments > textarea {
+    resize: none;
+    max-height: 90px;
+}
+.reviewerComments
+{
+    width: 300px;
+    max-height :100px;
+    margin-right: 40px;
+}
+
+.reviewerComments > textarea {
+    resize: none;
+    max-height: 90px;
+}
+.commentsField
+{
+    width: 300px;
+    max-height: 90px;
+}
+
+.postedstats
+{
+    background-color: cornflowerblue;
+}
+.popover-content
+{
+    overflow-y: auto;
+    overflow-x: none !important;
+    max-height: 550px;
+    max-width: 650px;
+
+}
+
+.popover-content img{
+    max-width: 600px;
+    align: center;
+}
+
+@-webkit-keyframes fadeOut {
+    0% {opacity: 1;}
+    100% {opacity: 0;}
+ }
+ 
+ @keyframes fadeOut {
+    0% {opacity: 1;}
+    100% {opacity: 0;}
+ }
+ 
+ .fadeOut {
+    -webkit-animation-name: fadeOut;
+    animation-name: fadeOut;
+ }
+.panel{
+ -webkit-animation-duration: 2s;animation-duration: 2s;
+ -webkit-animation-fill-mode: both;animation-fill-mode: both;
+}
+
+.popover {
+    position: absolute;
+    overflow-x: none !important;
+    top: 50 !important;
+    left: 50 !important;
+    z-index: 1010;
+    display: none;
+    max-width: 700px;
+    max-height : 600px;
+    padding: 1px;
+    text-align: left;
+    white-space: normal;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    -webkit-border-radius: 6px;
+       -moz-border-radius: 6px;
+            border-radius: 6px;
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+       -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    -webkit-background-clip: padding-box;
+       -moz-background-clip: padding;
+            background-clip: padding-box;
+  }

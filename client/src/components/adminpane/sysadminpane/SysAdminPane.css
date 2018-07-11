@@ -1,0 +1,136 @@
+.adminpane{
+    display: flex;
+    flex-direction: row;
+}
+.sysAdminPaneOuter {
+    margin-top: 10px;
+    display: flex;
+    flex-direction:column;
+}
+.levelselectorouter
+{
+    margin: 30px;
+    max-width: 300px;
+    min-width: 300px;
+    min-height:200px;
+    max-height: 200px;
+    overflow-y :auto;
+    border-style: solid;
+    border-width: 1px;
+    display: flex;
+    flex-direction: row;
+   
+}
+.buttonwrapper
+{
+    margin-top: 20px;
+}
+
+.usernamewrapper {
+    max-width: 300px;
+    margin-bottom: 10px;
+}
+
+.weeklyouter {
+    max-width: 250px;
+    margin-bottom: 10px;
+}
+.levelouter {
+    max-width: 250px;
+    margin-bottom: 10px;
+}
+
+.list-group{
+    background-color: white;
+}
+.list-group-item
+{
+    min-width: 298px;   
+}
+
+.selectouter
+{
+    max-width: 200px;
+    margin-top :10px;
+    margin-bottom : 10px;
+}
+
+.userdetailsouter
+{
+    margin: 30px;
+    height: 100%;
+    width:100%;
+    min-height: calc(100vh - 300px);
+    overflow-y :auto;
+    text-align: left;
+    
+}
+
+.userheader {
+    margin-bottom: 15px;
+    font-size: 18pt;
+}
+
+.buttonsouter {
+    margin-left: 40px;
+    display: flex;
+    flex-direction: row;
+    
+}
+
+.buttonsouter > div
+{
+  /* flex:1 1 auto; */
+ 
+
+  margin-left:20px;  /* and that, will result in a 10px gap */
+}
+
+
+.response
+{
+  
+  
+  background-color: #439aff;
+  color: white;
+  
+  opacity: 0;
+
+
+}
+
+
+.responseErr
+{
+  
+  
+  background-color: red;
+  color: white;
+  
+  opacity: 0;
+
+
+}
+.responseErr.show{
+  opacity: 0;
+  animation: fadein 8s ease-in-out 0s 1;  
+}
+
+.response.show{
+  opacity: 0;
+  animation: fadein 8s ease-in-out 0s 1;  
+}
+
+@keyframes fadein {
+  0%, 100% {
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 1;
+  }
+  80% {
+      opacity: 1;
+  }
+
+}

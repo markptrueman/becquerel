@@ -1,0 +1,18 @@
+
+.outer {
+  
+    min-height: 100%;
+    margin: 0px auto;
+    position: absolute;
+    width: 100%;
+    /* background-color: #fff; */
+    overflow-y:auto;
+    text-align: center;
+    font-family: 'Source Sans Pro', sans-serif;
+    background-image: url("/bg.png");
+    background-repeat: no-repeat;
+    background-size: 100% ;
+  
+}
+
+

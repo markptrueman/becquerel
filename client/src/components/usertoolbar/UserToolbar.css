@@ -1,0 +1,10 @@
+.usertoolbar
+{
+    min-height: 60px;
+    max-height: 60px;
+   
+}
+
+.activecurie {
+    background-color: #439aff;
+}
