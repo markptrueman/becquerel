@@ -23,7 +23,7 @@ class ReportsDiv extends Component {
     generateCuratorReport = (event)  => {
       //console.log("generating report between " + this.state.start.format() + " and " + this.state.end.format());
       event.preventDefault();
-      this.props.generateCuratorReport(this.state.start,this.state.end, this.state.selecteduser)
+      this.props.generateCuratorReport(this.state.start,this.state.end, this.state.selecteduser, this.props.reportOnlyThisUser)
       
     }
 
@@ -255,6 +255,7 @@ class ReportsDiv extends Component {
               To:
               <Datetime utc={true} onChange={this.endChanged} value={this.state.end}/>
             </div>
+             {this.props.showsinglecuratorreport  ? '' :
             <div className="dropdownwrapper">
               User:
               <Select
@@ -266,7 +267,7 @@ class ReportsDiv extends Component {
               placeholder="All Users" />
             </div>
 
-
+      }
 
       </div>
      
@@ -297,6 +298,8 @@ class ReportsDiv extends Component {
         <div className="buttonswrapper">
             
             {this.props.showcuratorreport ? curatorReport : null}
+
+            {this.props.showsinglecuratorreport ? detailedReport : null}
            
             {this.props.showdetailedreport ? detailedReport : null}
             

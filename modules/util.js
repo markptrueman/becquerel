@@ -28,7 +28,7 @@ module.exports.urlString = () => {
 }
 
 module.exports.isAuthenticated = (req, res, next, permission) => {
-    console.log("isAuthenticated :" + permission);
+   // console.log("isAuthenticated :" + permission);
 
     var jsontoken = JSON.parse(req.token);
 
@@ -45,12 +45,10 @@ module.exports.isAuthenticated = (req, res, next, permission) => {
             // check curator perms
             if (permission.includes("curator")) {
                 if (token.curator === true) {
-                    console.log("valid curator " + token.user);
                     // check the database to ensure that this user has still got permission
                      let res =  await User.find({ 'user': token.user, 'curator': true })
                         
                     if (res.length > 0) {
-                        console.log("found the user in the database and has persmission")
                         return next();
                     }
                     

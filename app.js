@@ -14,9 +14,10 @@ var auth = require('./routes/auth');
 var accounts = require('./routes/accounts')
 var mongoose = require('mongoose');
 var enforce = require('express-sslify');
-
+mongoose.Promise = require('bluebird');
 
 var config = require('./config')
+var cron = require('./modules/cron')
 
 
 
@@ -36,7 +37,7 @@ if (config.production) {
   app.use(enforce.HTTPS({ trustProtoHeader: true }))
 }
 
-app.use(logger('dev'));
+//app.use(logger('dev'));
 
 var dburl = 'mongodb://localhost:27017/curie'
 
@@ -46,6 +47,7 @@ if (config.db_user)
 }
 
 console.log("connecting to db " + dburl); 
+
 mongoose.set('debug', config.mongodebug);
 mongoose.connect(dburl, {
   useMongoClient: true,

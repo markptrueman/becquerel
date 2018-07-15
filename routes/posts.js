@@ -23,7 +23,7 @@ var validateAuth = function(perm)
 {
     return function(req,res,next)
     {
-        console.log(JSON.parse(req.token));
+        // console.log(JSON.parse(req.token));
 
         // return next();
  
@@ -34,7 +34,9 @@ var validateAuth = function(perm)
 
 
 router.get('/toapprove', validateAuth(['reviewer']), function(req, res, next) {
-    console.log("getting posts to approve");
+
+    let authuser = req.token != "null" && req.token ?  JSON.parse(req.token).user : "No User";
+    log.debug("route=posts,username=" + authuser + ",endpoint=toapprove");
 
     Post.find({ $and : [{'approved' : false}, {'rejected' : false} , {'closed' : false}]}, function(err, posts) {
         if (err) {
@@ -52,7 +54,8 @@ router.get('/toapprove', validateAuth(['reviewer']), function(req, res, next) {
 router.get('/approved/:page', function(req, res, next) {
    
     var thepage = req.params.page;
-    log.debug("getting approved posts on page " + thepage);
+    let authuser = req.token != "null" && req.token ?  JSON.parse(req.token).user : "No User";
+    log.debug("route=posts,username=" + authuser + ",endpoint=approved/:"+thepage);
    // console.log("getting approved posts on page " + thepage);
 
     //TO-DO need to limit this to exclude review details etc
@@ -80,12 +83,61 @@ router.get('/approved/:page', function(req, res, next) {
     });
 });
 
+router.get('/curator/:page', function(req, res, next) {
+   
+    var thepage = req.params.page;
+    let authuser = req.token != "null" && req.token ?  JSON.parse(req.token).user : "No User";
+    log.debug("route=posts,username=" + authuser + ",endpoint=approved/:"+thepage);
+   // console.log("getting approved posts on page " + thepage);
+
+    //TO-DO need to limit this to exclude review details etc
+
+    Post.paginate({'curator' : authuser}, { page : thepage , limit:10, sort: {"submittedtime" : 'desc'}}, function(err, posts) {
+    //Post.find({'approved' : true}, function(err, posts) {
+        if (err) {
+            res.send(err);
+        }
+        else  {
+
+            var toSend = [];
+
+            for (var i = 0; i < posts.docs.length; i++)
+            {
+                var item = {}
+                item.submittedtime = moment(posts.docs[i].submittedtime).format('LLL') + " UTC";
+                item.url = posts.docs[i].url
+                item.submitterComment = posts.docs[i].comments;
+                item.status = "Queued"
+                if (posts.docs[i].approved) {
+                    item.status = "Approved"
+                    if (posts.docs[i].votePercentage)
+                        item.status += " (" + posts.docs[i].votePercentage/100 + "%)"
+                }
+                if (posts.docs[i].rejected)
+                item.status = "Rejected"
+                if (posts.docs[i].closed)
+                itemstatus = "Closed"
+
+               toSend.push(item)
+
+            }
+            //console.log(posts);
+            res.json(toSend);
+           
+        }
+
+    });
+});
+
 router.post('/approve/:id', async function(req, res, next) {
+
 
     var id = req.params.id;
     var c = req.body.comment;
     var user = req.body.user;
-    console.log("Router to approve " + id);
+    let authuser = req.token != "null" && req.token ?  JSON.parse(req.token).user : "No User";
+    
+    log.debug("route=posts,username=" + authuser + ",endpoint=/approve:" +id);
 
     // check that the user approving isnt the submitter
 
@@ -129,7 +181,8 @@ router.post('/reject/:id', async function(req, res, next) {
     var id = req.params.id;
     var c = req.body.comment;
     var user = req.body.user;
-    console.log("Router to reject " + id);
+    let authuser = req.token != "null" && req.token ?  JSON.parse(req.token).user : "No User";
+    log.debug("route=posts,username=" + authuser + ",endpoint=/reject:" +id);
     const doc = {
         rejected: true,
         reviewTime : moment().utc(),
@@ -171,7 +224,8 @@ router.post('/comment/:id', function(req, res, next) {
     var id = req.params.id;
     var c = req.body.comment;
     var user = req.body.user;
-    console.log("Router to comment " + id);
+    let authuser = req.token != "null" && req.token ?  JSON.parse(req.token).user : "No User";
+    log.debug("route=posts,username=" + authuser + ",endpoint=/comment:" +id);
 
     const comment = { "$push" :    
         { "commentHistory" : {
@@ -203,7 +257,8 @@ router.post('/close/:id', async function(req, res, next) {
     var id = req.params.id;
     var c = req.body.comment;
     var user = req.body.user;
-    console.log("Router to close " + id);
+    let authuser = req.token != "null" && req.token ?  JSON.parse(req.token).user : "No User";
+    log.debug("route=posts,username=" + authuser + ",endpoint=/close:" +id);
     const doc = {
         closed: true,
         reviewTime : moment().utc(),
@@ -242,14 +297,15 @@ router.post('/close/:id', async function(req, res, next) {
 
 router.post('/' , validateAuth(['curator']), function(req, res, next) {
 
-    console.log("in post" + JSON.stringify(req.body.submittedValues));
+    //console.log("in post" + JSON.stringify(req.body.submittedValues));
     var post = new Post();
     //body parser lets us use the req.body
     post.url = req.body.submittedValues.url;
     post.comments = req.body.submittedValues.comments;
     post.curator = req.body.submittedValues.curator;
     post.submittedtime = moment().utc();
-    console.log("curator = " + post.curator + "has submitted post " + JSON.stringify(post));
+    let authuser = req.token != "null" && req.token ?  JSON.parse(req.token).user : "No User";
+    log.debug("route=posts,username=" + authuser + ",endpoint=/:" + post.url);
 
    
     var url = post.url + ".json";
@@ -266,7 +322,7 @@ router.post('/' , validateAuth(['curator']), function(req, res, next) {
       // console.log(data);
 
             var resp = await businessLogic.checkSubmission(req.body.submittedValues, data);
-            console.log("response from business logic = " + resp);
+            log.debug("response from business logic = " + resp);
 
             if (resp.response === "success") 
             {
@@ -275,12 +331,13 @@ router.post('/' , validateAuth(['curator']), function(req, res, next) {
                 post.postuser = data.post.author;
                 post.posttime = data.post.created;
                 post.body = data.post.body;
+                post.permlink = data.post.permlink;
                 post.save(function(err) {
                     if (err) {
                         console.log("ERROR " + JSON.stringify(err));
                         if (err.message.includes("Error, expected `url` to be unique") ) {
 
-                            console.log(err.message);
+                            log.error(err.message);
                             res.send({ err: 'Post has already been submitted' });
                         }
                     }
@@ -290,13 +347,13 @@ router.post('/' , validateAuth(['curator']), function(req, res, next) {
                 });
             }
             else {
-                console.log("unsuccesful submission " + JSON.stringify(resp));
+                log.debug("unsuccesful submission " + JSON.stringify(resp));
                 // send error respons
                 res.json(resp);
             }
     })
     .catch(function (err) {
-        console.log("error "+ err);
+        log.error("error "+ err);
         if (err.message.toString().includes("Invalid URI"));
         {
         

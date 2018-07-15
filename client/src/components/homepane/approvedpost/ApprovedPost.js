@@ -85,6 +85,7 @@ class ApprovedPost extends Component {
             <div className="bottomrow">
                 Proposed by @{this.props.detail.curator} {propDays > 0 ? `${propDays} days,` : null} {propHours > 0 ? `${propHours} hours and ` : null} {propMins} minutes ago. 
                 Reviewed {revDays > 0 ? `${revDays} days,` : null} {revHours > 0 ? `${revHours} hours and ` : null} {revMins} minutes ago.
+                {this.props.detail.votePercentage ? `Voted at ${this.props.detail.votePercentage/100}%` : null}
             </div>
             </div>
             

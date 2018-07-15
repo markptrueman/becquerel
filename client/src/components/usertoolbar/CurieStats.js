@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import './UserToolbar.css';
+import './CurieStats.css';
 import { Navbar, NavItem,Nav } from 'react-bootstrap';
 
 
@@ -26,15 +26,15 @@ class CurieStats extends Component {
     let stats = curiestats ? 
         (
         
-        <div>Curie Current VP = {curiestats.vp}% | Queue Size = {curiestats.queuesize}</div> 
+        <div className="curiediv">CurieVP = {curiestats.vp}% | Queue Size = {curiestats.queuesize}</div> 
     ) : '' ;
 
       return (
-      <Nav>
-          <NavItem eventKey={4}  href="#" >
+      // <Nav className="curieNav">
+          <NavItem className="curieNav" eventKey={4}  href="#" >
             {stats}
             </NavItem>
-        </Nav>
+        // </Nav>
         
      
       );

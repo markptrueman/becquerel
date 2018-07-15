@@ -5,6 +5,18 @@
    
 }
 
+
 .activecurie {
     background-color: #439aff;
+}
+
+.userprofileimage{
+    float:right;
+    margin-left: 10px;
+    min-width :48px;
+    max-width: 48px;
+    min-height: 48px;
+    max-height:48px;
+    background-image: url('https://steemitimages.com/u/markangeltrueman/avatar');
+   background-size: contain;
 }

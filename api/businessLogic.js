@@ -110,7 +110,7 @@ hasUserReachedSoftLimit = async (user, limits) =>
     // console.log(JSON.stringify(posts))
         if (posts.length >= user.dailySoftLimit)
         {
-            console.log(posts)
+           // console.log(posts)
             // trying to submit more than they should in the last day
             return true;
         }

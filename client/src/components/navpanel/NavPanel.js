@@ -4,6 +4,7 @@ import React, { Component } from 'react';
   import ApprovePane from "../approvepane/ApprovePane";
   import UserAdminPane from "../useradminpane/UserAdminPane";
   import AdminPane from "../adminpane/AdminPane";
+  import CuratorPane from "../curatorpane/CuratorPane"
   import moment from 'moment'
   import FileSaver from 'file-saver';
 
@@ -25,7 +26,8 @@ class NavPanel extends Component {
       super( props );
        this.state = {
             "approvalQueue" : null,
-            "approvedPage" : 1
+            "approvedPage" : 1,
+            "curatorPage" : 1
         
       }
 
@@ -33,6 +35,7 @@ class NavPanel extends Component {
       this.reload = this.reload.bind(this);
       this.checkAuthorisation = this.checkAuthorisation.bind(this);
       this.handlePageUpdate = this.handlePageUpdate.bind(this);
+      this.handleCuratorPageUpdate = this.handleCuratorPageUpdate.bind(this);
 
       this.authinfo = JSON.parse(localStorage.getItem('authtoken'));
 
@@ -48,6 +51,7 @@ class NavPanel extends Component {
   {
     this.loadApprovedQueue();
     this.loadLevels();
+    this.loadCuratorHistory();
     if (localStorage.getItem("selectedtab"))
     {
         console.log(localStorage.getItem("selectedtab"))
@@ -85,6 +89,15 @@ class NavPanel extends Component {
       
   }
       
+  handleCuratorPageUpdate = (page) => {
+
+    
+    this.setState( { "curatorPage" : page }, () => {
+          this.loadCuratorHistory();
+      }
+      );
+    
+    }
     handleSelect = (key) => {
        
         this.setState({activeKey: key});
@@ -107,6 +120,12 @@ class NavPanel extends Component {
             // admin tab selected
             
             this.loadUserDetails();
+            
+        }
+        if (key === 6){
+            // approve tab selected
+            
+            this.loadCuratorHistory();
             
         }
     }
@@ -136,6 +155,21 @@ class NavPanel extends Component {
         .then(posts => {
             
              this.setState({"approvedPosts" : posts});
+
+        });
+    }
+
+    loadCuratorHistory = () => {
+        let page = 1;
+        fetch('/posts/curator/' + this.state.curatorPage, {
+            headers: this.headers()
+       })
+        .then(results => {
+            return results.json();
+        })
+        .then(posts => {
+            
+             this.setState({"curatorPosts" : posts});
 
         });
     }
@@ -249,6 +283,7 @@ class NavPanel extends Component {
     {
         this.loadReviewerQueue();
         this.loadApprovedQueue();
+        this.loadCuratorHistory();
        
     }
 
@@ -312,6 +347,31 @@ class NavPanel extends Component {
             })
         }
     }
+    generatePersonalDetailedCuratorReport = (startTime, endTime) =>
+    {
+        console.log(startTime +" - " + endTime);
+        if (startTime && endTime) {
+        fetch('/accounts/curatordetailedpersonal/' + startTime + "/" + endTime , {
+
+            method: 'post',
+      
+            headers: this.headers(),
+             //body: JSON.stringify(submittedValues) 
+           })
+            .then(results => {
+                console.log("results = " + JSON.stringify(results));
+                return results.blob();
+            })
+            .then(data => {
+                console.log(data);
+                // data is a blob, download it
+                let filename = "CuratorDetailedReport-" + moment(startTime).utc().format("YYYY-MM-DD HH:mm") + " - "+ moment(endTime).utc().format("YYYY-MM-DD HH:mm")+".csv";
+                FileSaver.saveAs(data,filename);
+
+               
+            })
+        }
+    }
 
     generateReviewerReport = (startTime, endTime) =>
     {
@@ -353,6 +413,7 @@ class NavPanel extends Component {
               <ProposePane {...this.props}/>
           </Tab>
           : null }
+           
            { this.checkAuthorisation('reviewer') ?
           <Tab eventKey={3} title="Review" >
              <ApprovePane {...this.props} approvalQueue={this.state.approvalQueue} closeHandler={this.handleClose} 
@@ -381,6 +442,12 @@ class NavPanel extends Component {
               allowRoleChange={true} allowDelete={true}/>
           </Tab>
           :null }
+          { this.checkAuthorisation('curator') ?
+          <Tab eventKey={6} title="Curator">
+              <CuratorPane {...this.props} curatorPosts={this.state.curatorPosts} pageUpdate={this.handleCuratorPageUpdate} showsinglecuratorreport={true} 
+                 generateDetailedCuratorReport={this.generatePersonalDetailedCuratorReport} />
+          </Tab>
+          : null }
         </Tabs>
 
         </div>

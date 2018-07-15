@@ -28,7 +28,9 @@ var PostSchema = new Schema({
             comment : {type : String},
             commenter : {type : String}
         }
-    ]
+    ],
+    permlink : String,
+    votePercentage : Number
 
 });
 

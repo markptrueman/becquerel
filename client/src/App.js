@@ -6,6 +6,7 @@ import { Route , Redirect} from 'react-router-dom'
 import AppWrapper from './AppWrapper';
 import Callback from './Callback';
 import Auth from './auth'
+import queryString from 'query-string'
 
 
 
@@ -37,17 +38,20 @@ class App extends Component {
 
   render() {
 
-      console.log("rendering APP");
+   
+      
       var auth = this.auth;
 
       return (
         <div>
         <Route exact path='/' render={(props) => <AppWrapper auth={auth} {...props} />}/>
 
-        {/* <Route exact path='/review' render={(props) => {
+         
+
+        {/* <Route  path='/submit/:url' render={(props) => {
           return <Redirect to={{
-            pathname: '/',
-            state: { stateName: this.state.anyState}
+            pathname: '/'
+           
           }} />;
             }}/> */}
             

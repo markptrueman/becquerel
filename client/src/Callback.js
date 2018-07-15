@@ -16,7 +16,7 @@ class Callback extends Component {
   });
       
 componentDidMount() {
-  console.log(JSON.stringify(this.props));
+  //console.log(JSON.stringify(this.props));
   fetch('/authorize', {
     headers : this.headers(),
     method: 'post',

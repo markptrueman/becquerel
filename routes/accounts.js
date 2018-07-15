@@ -21,7 +21,7 @@ var validateAuth = function(perm)
 {
     return function(req,res,next)
     {
-        console.log(JSON.parse(req.token));
+        //console.log(JSON.parse(req.token));
 
        
  
@@ -50,6 +50,19 @@ router.post('/curatordetailed/:start/:end/:user', validateAuth(['administrator']
     var user = req.params.user; // could be null
     console.log("getting curator detailedreport between " + moment(start).utc().format() + " and " + moment(end).utc().format());
     let csv =  await accountshelper.generateDetailedReport(start, end, user);
+    
+
+    res.status(200).send(csv);
+    
+    
+});
+
+router.post('/curatordetailedpersonal/:start/:end', validateAuth(['curator']), async function(req, res, next) {
+    var start = Number(req.params.start);
+    var end = Number(req.params.end);
+    var user = JSON.parse(req.token).user;
+    console.log("getting curator personal detailedreport between " + moment(start).utc().format() + " and " + moment(end).utc().format());
+    let csv =  await accountshelper.generateDetailedPersonalReport(start, end, user);
     
 
     res.status(200).send(csv);

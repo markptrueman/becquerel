@@ -118,6 +118,14 @@ class SysAdminPane extends Component {
       foo.newlevel = true;
       foo.limit=5;
       foo.minutes = 150
+      let maxLevelNo = 0;
+      for (var i = 0; i < this.props.levels.length; i++){
+        if (this.props.levels[i].level > maxLevelNo)
+        {
+          maxLevelNo = this.props.levels[i].level;
+        }
+      }
+      foo.level = maxLevelNo+1;
       this.setState({"selectedlevel" : foo});
 
     }

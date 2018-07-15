@@ -10,13 +10,13 @@ var request = require('request');
 /* GET auth listing. */
 // this is the generic call to get authorised with steemconnect
 router.post('/', (req, res, next) => {
-    console.log("auth called server side");
+    //console.log("auth called server side");
     if (!req.token ) {
         // you havent got an access token but you might already be authed with  steemconnect
 
-        console.log("no access token sent - redirecting to steemconnect");
+        //console.log("no access token sent - redirecting to steemconnect");
         let uri = steemconnect.getLoginURL();
-        console.log(uri);
+        //console.log(uri);
         res.redirect(uri);
     } else {
         // this is called once the user has received their access token
@@ -33,7 +33,7 @@ router.post('/', (req, res, next) => {
             else {
 
             
-                console.log("Steemresponse = " + JSON.stringify(steemResponse));
+               // console.log("Steemresponse = " + JSON.stringify(steemResponse));
 
                 var username = steemResponse.user;
                 User.find({'user' : username}, function(err, obj)
@@ -100,7 +100,7 @@ router.post('/captcha', (req,resp) => {
             response: response}
     },
     function (err, res, body) {
-        console.log(body);
+      //  console.log(body);
         resp.json(JSON.parse(body));
     });
 

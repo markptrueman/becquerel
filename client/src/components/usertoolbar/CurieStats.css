@@ -5,3 +5,16 @@
    
 }
 
+
+/* @media only screen and (min-width: 600px) {
+    .curieNav {
+        margin-left: 250px;
+    }
+} */
+.curieNav {
+    max-width: 250px;
+}
+/* .curiediv {
+    position: absolute;
+    min-width: 300px;
+} */

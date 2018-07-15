@@ -56,11 +56,14 @@ class UserToolbar extends Component {
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>
+          <Nav pullLeft>
             <UserStats {...this.props}/>
             <CurieStats {...this.props}/>
+            </Nav>
           <Nav pullRight>
           { this.props.auth.isAuthenticated() ?
             <NavItem eventKey={1} onClick={this.logout} href="">
+            {/* <div className="userprofileimage"/> */}
                 Logout @{this.authinfo.user}
             </NavItem>
             :

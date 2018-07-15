@@ -13,7 +13,8 @@ let config = {
     db_user : process.env.DB_USER,
     db_pwd : process.env.DB_PWD,
     jwtsecret: process.env.JWT_SECRET,
-    mongodebug : false
+    mongodebug : false,
+    upvoteuser : "curie"
   
 };
 
