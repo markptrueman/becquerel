@@ -74,7 +74,7 @@ router.get('/userstats/:user', validateAuth(['curator']), async function(req, re
 
         let userjson = await User.findOne({"user" : user});
         let level = await CuratorLevels.findOne({"level" : userjson.level});
-        let posts = await Posts.find({ $and: [{ "submittedtime": { $gte: sevendaysago.utc() } }, { "curator": user }] }).sort({"submittedTime": -1});
+        let posts = await Posts.find({ $and: [{ "submittedtime": { $gte: sevendaysago.utc() } }, { "curator": user }] }).sort({"submittedtime": -1});
 
         // loop through and anything after sunday, add to the count
        
@@ -118,13 +118,14 @@ router.get('/userstats/:user', validateAuth(['curator']), async function(req, re
         {
             atSoftLimit = true;
             nextSlotOpens = startOfDay;
+            // this has set the next slot to open at 00:00 tonight
         }
 
         // if, in the last 7 days you are at your limit,
         if (posts && level.limit == posts.length)
         {
             // hit weekly limit, next slot could open when the first post is 7 days old
-            let possibleNextSlot = moment(posts[0].submittedtime)
+            let possibleNextSlot = moment(posts[length-1].submittedtime)
             if (nextSlotOpens == null || possibleNextSlot.isAfter(nextSlotOpens))
             {
                 nextSlotOpens = possibleNextSlot;

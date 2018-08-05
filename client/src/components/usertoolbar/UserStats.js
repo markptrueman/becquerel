@@ -20,7 +20,7 @@ class UserStats extends Component {
     }
 
     componentDidMount = () => {
-      var intervalId = setInterval(this.timer, 10000);
+      var intervalId = setInterval(this.timer, 5000);
       // store intervalId in the state so it can be accessed later:
       this.setState({intervalId: intervalId});
       this.timer();

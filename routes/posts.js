@@ -116,7 +116,7 @@ router.get('/curator/:page', function(req, res, next) {
                 if (posts.docs[i].rejected)
                 item.status = "Rejected"
                 if (posts.docs[i].closed)
-                itemstatus = "Closed"
+                item.status = "Closed"
 
                toSend.push(item)
 

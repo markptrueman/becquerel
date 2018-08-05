@@ -27,11 +27,11 @@ exports.checkSubmission = async function(submittedValues, postDetails)
     //2018-01-16T18:07:18
     let created = moment.utc(postDetails.post.created);
     // check to see if post is created in the last 24 hours
-    let yesterday  = moment().utc().subtract(24, "hours");
+    let yesterday  = moment().utc().subtract(3, "days");
 
     if (created.isBefore(yesterday))
     {
-        return   {"err" : "Post is more than 24 hours old."};
+        return   {"err" : "Post is more than 3 days old."};
     }
 
     console.log('checking to see if it is already submitted')
