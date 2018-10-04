@@ -5,11 +5,32 @@ var steem = require('steem');
 var Post = require('../model/posts');
 
 module.exports.getCurieVp = async () => {
-    let result = await steem.api.getAccountsAsync(["curie"]); 
-    var secondsago = (new Date - new Date(result[0].last_vote_time + "Z")) / 1000;
-    var vpow = result[0].voting_power + (10000 * secondsago / 432000);
-    vpow = Math.min(vpow / 100, 100).toFixed(2);
+    let vpow = await getvotingpower("curie");
     return vpow;
+}
+
+function getvotingpower(account_name, callback) {
+    return new Promise(resolve => {
+        steem.api.getAccounts([account_name], function (err, account) {
+
+            account = account[0];
+
+            const totalShares = parseFloat(account.vesting_shares) + parseFloat(account.received_vesting_shares) - parseFloat(account.delegated_vesting_shares) - parseFloat(account.vesting_withdraw_rate);
+
+            const elapsed = Math.floor(Date.now() / 1000) - account.voting_manabar.last_update_time;
+            const maxMana = totalShares * 1000000;
+            // 432000 sec = 5 days
+            let currentMana = parseFloat(account.voting_manabar.current_mana) + elapsed * maxMana / 432000;
+
+            if (currentMana > maxMana) {
+                currentMana = maxMana;
+            }
+
+            const currentManaPerc = (currentMana * 100 / maxMana).toFixed(2);
+
+            return resolve(currentManaPerc);
+        });
+    });
 }
 
 module.exports.getQueueSize = async () => {

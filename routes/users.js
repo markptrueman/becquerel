@@ -110,27 +110,56 @@ router.get('/userstats/:user', validateAuth(['curator']), async function(req, re
         cs = isNaN(cs) ? 0 : cs;
         ar = isNaN(ar) ? 1 : ar;
 
-        let atSoftLimit = false;
 
+        // calculate next slot
+
+        let atSoftLimit = false;
+        let dailySlotOpens = null;
+        let weeklySlotOpens = null;
         let nextSlotOpens = null;
+
+        // firstly calculate  the next daily soft limit slot
 
         if (subbedToday === userjson.dailySoftLimit)
         {
             atSoftLimit = true;
-            nextSlotOpens = startOfDay;
+            dailySlotOpens = startOfDay;
+
             // this has set the next slot to open at 00:00 tonight
         }
 
-        // if, in the last 7 days you are at your limit,
-        if (posts && level.limit == posts.length)
+        // so you have your daily slot either open now (null) or set to a time
+
+        // check your weekly slots
+       // posts are all the posts you have subbed in the last 7 days
+       // take into account that you might have subbed 20 last week and be on a 5 limit this week
+        if (posts && posts.length >= level.limit)
         {
-            // hit weekly limit, next slot could open when the first post is 7 days old
-            let possibleNextSlot = moment(posts[length-1].submittedtime)
-            if (nextSlotOpens == null || possibleNextSlot.isAfter(nextSlotOpens))
-            {
-                nextSlotOpens = possibleNextSlot;
-                nextSlotOpens.add(7,"days");
+            // hit weekly limit, next slot could open when the post that is "level.limit" in your subs is 7 days old
+            // posts has the most recent post at index 0
+            weeklySlotOpens = moment(posts[level.limit-1].submittedtime)
+            weeklySlotOpens.add(7,"days");
+            
+        }
+
+        // work out which one of the daily and weekly open slots takes priority
+        if (dailySlotOpens != null && weeklySlotOpens != null)  {
+            // they are both in use so work out which one is furthest in the future
+            if (dailySlotOpens.isAfter(weeklySlotOpens) ) {
+                nextSlotOpens = dailySlotOpens
             }
+            else {
+                nextSlotOpens = weeklySlotOpens;
+            }
+        }
+        else if (dailySlotOpens != null)
+        {
+            nextSlotOpens = dailySlotOpens;
+        
+        } 
+        else if (weeklySlotOpens != null)
+        {
+            nextSlotOpens = weeklySlotOpens;
         }
 
         let response = { "approved": app, "rejected": rejected, "queued": queued, "closed": closed, "cs": cs, "ar": (ar * 100), 
